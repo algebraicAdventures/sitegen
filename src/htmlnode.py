@@ -11,9 +11,29 @@ class HTMLNode():
 
     def props_to_html(self):
         prop_string = ""
+        if self.props == None:
+            return None
         for prop in self.props:
             prop_string = prop_string + f"{prop}=\"{self.props[prop]}\" "
         return prop_string
     
     def __repr__(self):
         print(f"tag: {self.tag}, value: {self.value}, children: {self.children}, props: {self.props}")
+
+class LeafNode(HTMLNode):
+
+    def __init__(self, tag, value, props=None):
+        self.tag = tag
+        self.value = value
+        self.props = props
+        super().__init__(tag=tag, value=value, props=props)
+
+    def to_html(self):
+        if self.value == None:
+            raise ValueError()
+        if self.tag == None:
+            return self.value
+        return f"<{self.tag} {self.props_to_html()}>{self.value}</{self.tag}>"
+    
+    def props_to_html(self):
+        return super().props_to_html()
