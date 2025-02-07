@@ -33,7 +33,8 @@ class LeafNode(HTMLNode):
             raise ValueError("LeafNode does not have a value")
         if self.tag == None:
             return self.value
-        return f"<{self.tag}{(self.props_to_html(),"")[self.props_to_html() == None]}>{self.value}</{self.tag}>"
+        props = self.props_to_html() if self.props_to_html() is not None else ""
+        return f"<{self.tag}{props}>{self.value}</{self.tag}>"
     
     def props_to_html(self):
         return super().props_to_html()
@@ -51,7 +52,8 @@ class ParentNode(HTMLNode):
             raise ValueError("ParentNode does not have a tag")
         if self.children == None:
             raise ValueError("ParentNode is missing children")
-        html = f"<{self.tag}{(self.props_to_html(),"")[self.props_to_html() == None]}>"
+        props = self.props_to_html() if self.props_to_html() is not None else ""
+        html = f"<{self.tag}{props}>"
         for child in self.children:
             html += child.to_html()
         html += f"</{self.tag}>"

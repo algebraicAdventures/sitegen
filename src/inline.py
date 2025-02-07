@@ -9,10 +9,11 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
         if node.text_type != TextType.TEXT:
             nodes.append(node)
             continue
-        for letter in node.text:
-            if letter is delimiter:
-                open = not open
-            if not open:
+        split_nodes = node.text.split(delimiter)
+        if len(split_nodes) % 2 == 0:
+            raise ValueError("Invalid markdown - delimiter not closed")
+        for i in range(len(split_nodes)):
+                nodes.append(TextNode(split_nodes[i], text_type))
 
 
     # for each node in old nodes
